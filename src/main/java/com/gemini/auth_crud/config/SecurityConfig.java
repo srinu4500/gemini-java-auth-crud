@@ -11,8 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-
-import static org.springframework.security.config.Customizer.withDefaults;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 @Configuration
 @EnableWebSecurity
@@ -39,21 +38,24 @@ public class SecurityConfig {
         http
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/api/users/register").permitAll()
+                .requestMatchers("/register", "/api/users/register", "/login").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated()
             )
+            .exceptionHandling(exceptionHandling -> exceptionHandling
+                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/register"))
+            )
             .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable())) // For H2 console
             .formLogin(login -> login
+                .loginPage("/login")
                 .defaultSuccessUrl("/", true)
                 .permitAll()
             )
             .logout(logout -> logout
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout")
+                .logoutSuccessUrl("/register?logout")
                 .permitAll()
-            )
-            .httpBasic(withDefaults());
+            );
 
         return http.build();
     }
