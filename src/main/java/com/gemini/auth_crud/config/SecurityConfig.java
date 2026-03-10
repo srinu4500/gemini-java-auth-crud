@@ -38,19 +38,12 @@ public class SecurityConfig {
         http
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/register", "/api/users/register", "/login").permitAll()
+                .requestMatchers("/api/users/register").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
+                .requestMatchers("/", "/index.html", "/*.js", "/*.css", "/favicon.ico", "/register", "/login").permitAll()
                 .anyRequest().authenticated()
             )
-            .exceptionHandling(exceptionHandling -> exceptionHandling
-                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/register"))
-            )
             .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable())) // For H2 console
-            .formLogin(login -> login
-                .loginPage("/login")
-                .defaultSuccessUrl("/", true)
-                .permitAll()
-            )
             .logout(logout -> logout
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/register?logout")
