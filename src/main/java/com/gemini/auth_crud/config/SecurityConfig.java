@@ -44,7 +44,10 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
             .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable())) // For H2 console
-            .formLogin(withDefaults())
+            .formLogin(login -> login
+                .defaultSuccessUrl("/", true)
+                .permitAll()
+            )
             .logout(logout -> logout
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login?logout")
