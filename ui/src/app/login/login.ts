@@ -17,7 +17,7 @@ export class LoginComponent {
 
   onSubmit() {
     this.authService.login(this.credentials).subscribe({
-      next: () => this.router.navigate(['/']),
+      next: () => this.router.navigate(['/home']),
       error: err => alert('Login failed!')
     });
   }

@@ -13,8 +13,8 @@ export class HomeComponent {
 
   logout() {
     this.authService.logout().subscribe({
-      next: () => this.router.navigate(['/register']),
-      error: () => this.router.navigate(['/register'])
+      next: () => this.router.navigate(['/login']),
+      error: () => this.router.navigate(['/login'])
     });
   }
 }
