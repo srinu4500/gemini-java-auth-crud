@@ -1,0 +1,17 @@
+<div style='text-align: center; margin-top: 50px;'>
+  <h2>Login Page</h2>
+  <form (ngSubmit)='onSubmit()'>
+    <div>
+      <label>Username:</label>
+      <input name='username' [(ngModel)]='credentials.username' required>
+    </div>
+    <br>
+    <div>
+      <label>Password:</label>
+      <input type='password' name='password' [(ngModel)]='credentials.password' required>
+    </div>
+    <br>
+    <button type='submit'>Login</button>
+  </form>
+  <p>Don't have an account? <a routerLink='/register'>Register here</a></p>
+</div>
