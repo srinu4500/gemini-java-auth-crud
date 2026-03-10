@@ -39,12 +39,12 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers("/api/users/register", "/h2-console/**").permitAll()
-                .requestMatchers("/", "/index.html", "/*.js", "/*.css", "/favicon.ico", "/register", "/login").permitAll()
+                .requestMatchers("/", "/home", "/login", "/register", "/index.html", "/*.js", "/*.css", "/favicon.ico").permitAll()
                 .anyRequest().authenticated()
             )
-            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable())) // For H2 console
-            .formLogin(withDefaults()) // Enables default login form for browser testing
-            .httpBasic(withDefaults()) // Enables Basic Auth (used by Angular and Postman)
+            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
+            .formLogin(withDefaults())
+            .httpBasic(withDefaults())
             .logout(logout -> logout
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/register?logout")
