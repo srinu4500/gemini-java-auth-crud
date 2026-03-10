@@ -43,7 +43,10 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
             .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
-            .formLogin(withDefaults())
+            .formLogin(login -> login
+                .defaultSuccessUrl("/home", true)
+                .permitAll()
+            )
             .httpBasic(withDefaults())
             .logout(logout -> logout
                 .logoutUrl("/logout")
