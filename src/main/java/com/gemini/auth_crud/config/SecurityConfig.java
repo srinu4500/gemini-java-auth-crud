@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -38,12 +38,13 @@ public class SecurityConfig {
         http
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/api/users/register").permitAll()
-                .requestMatchers("/h2-console/**").permitAll()
+                .requestMatchers("/api/users/register", "/h2-console/**").permitAll()
                 .requestMatchers("/", "/index.html", "/*.js", "/*.css", "/favicon.ico", "/register", "/login").permitAll()
                 .anyRequest().authenticated()
             )
             .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable())) // For H2 console
+            .formLogin(withDefaults()) // Enables default login form for browser testing
+            .httpBasic(withDefaults()) // Enables Basic Auth (used by Angular and Postman)
             .logout(logout -> logout
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/register?logout")
